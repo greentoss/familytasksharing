@@ -1,12 +1,42 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import styled from 'styled-components/native';
+import Header from "./components/Header";
+import ListItem from "./components/TasksListItem";
+import {useState} from "react";
+import InputForm from "./components/InputTaskForm";
+import uuid from 'react-native-uuid';
 
 export default function App() {
+  const [itemsList, setItemsList] = useState([
+      {text: 'купить молоко', key: '1', isDone: false, inProgress: false},
+      {text: 'заплатить за интернет', key: '2', isDone: false, inProgress: false},
+      {text: 'купить хлеб', key: '3', isDone: false, inProgress: false}
+  ])
+
+  const addTaskHandler = (text) => {
+      setItemsList((list) => {
+          return [
+
+              { text: text, key: uuid.v4(), isDone: false, inProgress: false },
+              ...list
+          ]
+      })
+  }
+
+  const deleteTaskHandler = (key) => {
+      setItemsList((list) => {
+          return list.filter(itemsList => itemsList.key !== key)
+      })
+  }
+
   return (
     <Container>
+        <Header />
         <Group>
+            <InputForm addTaskHandler={addTaskHandler} />
             <GroupTitle>Поточні задачі:</GroupTitle>
+
             <GroupItem>
                 <View>
                     <ItemHeader>опис першої задачі</ItemHeader>
@@ -14,8 +44,20 @@ export default function App() {
                 </View>
                 <ItemAvatar source={{uri:'https://career.softserveinc.com/uploads/avatars/avatar_49144_1705472408.png'}} />
                 <GroupDate>12:30</GroupDate>
-        </GroupItem>
+            </GroupItem>
+
+            <FlatList
+                data={itemsList}
+                renderItem={({ item }) => (
+                <ListItem
+                    elem={item}
+                    deleteTaskHandler={deleteTaskHandler}
+                />
+                )}
+            />
+
         </Group>
+        <StatusBar style='auto' />
     </Container>
   );
 }
@@ -32,7 +74,7 @@ export default function App() {
 // });
 const Container = styled.View`
     flex: 1;
-    margin-top: 50px;
+    // margin-top: 50px;
 `;
 
 const Group = styled.View`
