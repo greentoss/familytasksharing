@@ -20,7 +20,6 @@ export default function ListItem({elem, deleteTaskHandler}) {
 const styles = StyleSheet.create({
     listText: {
         padding: 20,
-        borderRadius: 5,
         borderWidth: 1,
         backgroundColor: '#fafafa',
         fontSize: 20,

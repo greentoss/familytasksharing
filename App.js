@@ -100,7 +100,7 @@ const ItemHeader = styled.Text`
 `;
 
 const ItemAvatar = styled.Image`
-    border-radius: 50%;
+    //border-radius: 50%;
     width: 40px;
     height: 40px;
     margin-left: 15px;
